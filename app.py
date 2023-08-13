@@ -57,7 +57,7 @@ async def main():
         return result["answer"]
 
 
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo")
+    llm = ChatOpenAI(model_name="gpt-4")
     chain = load_qa_chain(llm, chain_type="stuff")
 
     if 'history' not in st.session_state:
@@ -80,7 +80,7 @@ async def main():
             file = uploaded_file.read()
             # pdf = PyPDF2.PdfFileReader()
             vectors = await getDocEmbeds(io.BytesIO(file), uploaded_file.name)
-            qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(model_name="gpt-3.5-turbo"), retriever=vectors.as_retriever(), return_source_documents=True)
+            qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(model_name="gpt-4"), retriever=vectors.as_retriever(), return_source_documents=True)
 
         st.session_state['ready'] = True
 
@@ -113,8 +113,8 @@ async def main():
         if st.session_state['generated']:
             with response_container:
                 for i in range(len(st.session_state['generated'])):
-                    message(st.session_state["past"][i], is_user=True, key=str(i) + '_user', avatar_style="thumbs")
-                    message(st.session_state["generated"][i], key=str(i), avatar_style="fun-emoji")
+                    message(st.session_state["past"][i], is_user=True, key=str(i) + '_user')
+                    message(st.session_state["generated"][i], key=str(i))
 
 
 if __name__ == "__main__":
